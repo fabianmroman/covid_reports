@@ -67,7 +67,10 @@ CSV_FILE = "./csv/provincias.csv"
 CSV_PROVINCIAS_MARZO = "./csv/provincias_marzo.csv"
 PATHPDF = "./pdf/"
 
-
+# Preparar el downloader con los headers
+opener = build_opener()
+opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+install_opener(opener)
 
 # Carga / creacion del dataset desde un archivo csv. El archivo csv inicial (mes de marzo) es provincias_marzo.csv
 
@@ -79,23 +82,37 @@ try:
     with open(CSV_FILE, 'r') as f:
         if len(f.read()) >= 31750:  # Dataset con datos mas alla de marzo
             provFile = True
+        else:
+            f.close()
+            urlretrieve("https://raw.githubusercontent.com/fabianmroman/covid_reports_v1/master/csv/provincias.csv", CSV_FILE)
+            with open(CSV_FILE, 'r') as f:
+                if len(f.read()) >= 31750: # Dataset de marzo bajado correctamente
+                    provFile = True
         f.close()
-except:
-    pass
+except:  # archivo inexistente
+    urlretrieve("https://raw.githubusercontent.com/fabianmroman/covid_reports_v1/master/csv/provincias.csv", CSV_FILE)
+    with open(CSV_FILE, 'r') as f:
+        if len(f.read()) >= 31750: # Dataset de marzo bajado correctamente
+            provFile = True
+        f.close()
 
 try:
     with open(CSV_PROVINCIAS_MARZO, 'r') as g:
         if len(g.read()) == 31750: # Dataset de marzo no modificado 
             provmarzoFile = True
+        else:  # archivo modificado
+            g.close()
+            urlretrieve("https://raw.githubusercontent.com/fabianmroman/covid_reports_v1/master/csv/provincias_marzo.csv", CSV_PROVINCIAS_MARZO)
+            with open(CSV_PROVINCIAS_MARZO, 'r') as g:
+                if len(g.read()) == 31750: # Dataset de marzo bajado correctamente
+                    provmarzoFile = True
         g.close()
-except:
-    pass
-    """ Que lo baje de Github
+except:  # archivo inexistente
+    urlretrieve("https://raw.githubusercontent.com/fabianmroman/covid_reports_v1/master/csv/provincias_marzo.csv", CSV_PROVINCIAS_MARZO)
     with open(CSV_PROVINCIAS_MARZO, 'r') as g:
         if len(g.read()) == 31750: # Dataset de marzo bajado correctamente
             provmarzoFile = True
         g.close()
-    """ 
 
 
 if not provFile and not provmarzoFile:  # En caso de modificacion de los dataset, que los copie
@@ -145,11 +162,6 @@ if provFile:
     # Seccion 1: Bajar los PDF necesarios para actualizar el dataset con los datos de provincias hasta hoy
     # ====================================================================================================
 
-    # Preparar el downloader con los headers
-
-    opener = build_opener()
-    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-    install_opener(opener)
 
     diasanteriores=[] # Se guarda en esta lista los datos del reporte matutino anterior en caso de que falte un vespertino
     # Al estar afuera del ciclo, si falla va a tomar el dia anterior aunque cambie de mes!
