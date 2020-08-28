@@ -7,7 +7,7 @@ Cómo comenzo esto
 
 A fines de marzo 2020, cuando supe que estaban disponibles los datasets con informacion a nivel mundial (https://data.humdata.org/dataset/novel-coronavirus-2019-ncov-cases), quise poder generar mis propios reportes de determinados países. 
 Como mi conocimiendo de Python era muy básico, comencé a hacerlo en Excel, con todas sus limitaciones y procedimientos manuales. 
-En julio retomé por unos días mi aprendizaje de Python y luego comencé a poner manos a la obra en este primer proyecto en Python, usándolo como proposito de aprendizaje. 
+En julio retomé por unos días mi aprendizaje de Python y luego comencé a poner manos a la obra en este primer proyecto en Python, usándolo con propósitos de aprendizaje. 
 
 
 ¿Por qué analizo los datos del COVID-19?
@@ -44,6 +44,7 @@ Carpetas
 Scripts
 - sortfilenames.py: Actualiza el dataset ./csv/provincias.csv
 - duplicate.py: Genera una planilla Excel por cada país seleccionado usando como base el dataset disponible públicamente en https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv
+NOTA 28/08/2020. Este dataset dejó de actualizarse. Voy a generar los reportes a partir del dataset global de humdata.org.
 - duplicate-prov.py: Genera una planilla Excel por cada provincia argentina seleccionada usando como base el dataset generado por el script sortfilenames.py. 
 
 
