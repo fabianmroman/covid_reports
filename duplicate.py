@@ -63,9 +63,9 @@ def dTime (df, *from_columns):
 #datetime.utcnow()
 
 # Carga de dataset globales
-dfconfirmed = pd.read_csv('./csv/time_series_covid19_confirmed_global.csv')
-dfdeaths = pd.read_csv('./csv/time_series_covid19_deaths_global.csv')
-dfrecovered = pd.read_csv('./csv/time_series_covid19_recovered_global.csv')
+dfconfirmed = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv')
+dfdeaths = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv')
+dfrecovered = pd.read_csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
 
 country = input ("Seleccionar uno o varios paises separados por comas, con o sin espacios: ")
 countries = country.split(",")  # This MUST be a list
