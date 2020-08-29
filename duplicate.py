@@ -1,11 +1,12 @@
 """
-Este script genera un archivo Excel con datos del COVID-19 por cada pais seleccionado. Utiliza el siguiente dataset:
-https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv
+Este script genera un archivo Excel con datos del COVID-19 por cada pais seleccionado. Utiliza los datasets globales
+disponibles en humdata.org. En versiones anteriores a la 1.5 se utilizaba un dataset en base de este, pero dejo de
+actualizarse
 
 
 CHANGELOG
 
-v1.0 Reporte adaptado a partir de https://towardsdatascience.com/visualizing-covid-19-data-beautifully-in-python-in-5-minutes-or-less
+v1.0 Reporte adaptado a partir de https://towardsdatascience.com/visualizing-covid-19-data-beautifully-in-python-in-5-minutes-or-less-affc361b2c6a
 
 v1.1 Se pueden seleccionar varios paises. 
      Added duplication time for Active, Recovered and Confirmed. Rewritten dTime function
@@ -18,6 +19,11 @@ v1.3 Agregadas nuevas columnas para mostrar mas indicadores
 v1.4 Reorganizados nombres de variables y comentarios para darle legibilidad y coherencia al codigo.
      Codigo adaptado con paths diferentes para cada tipo de archivo.
      Calculo indice de mortalidad. Renombrado de columnas.
+     
+v1.5 Comienzan a utilizarse los datasets globales de humdata.org, ya que los que se utilizaron en el script original
+     dejaron de actualizarse. Adaptacion del codigo a los nuevos datasets.
+     https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/
+     Pendiente: cambiar formato de fecha a mm/dd/yy.
 """
 
 import pandas as pd
@@ -52,20 +58,33 @@ def dTime (df, *from_columns):
         df['Tiempodupl' + column] = duplist
     return df
 
+# Dataset antiguo 
+#df = pd.read_csv('https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv', parse_dates=['Date'])
+#datetime.utcnow()
 
-df = pd.read_csv('https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv', parse_dates=['Date'])
+# Carga de dataset globales
+dfconfirmed = pd.read_csv('./csv/time_series_covid19_confirmed_global.csv')
+dfdeaths = pd.read_csv('./csv/time_series_covid19_deaths_global.csv')
+dfrecovered = pd.read_csv('./csv/time_series_covid19_recovered_global.csv')
+
 country = input ("Seleccionar uno o varios paises separados por comas, con o sin espacios: ")
 countries = country.split(",")  # This MUST be a list
 redondeo = 4  # Cuantos digitos decimales se desean para los indicadores
 
 for country in countries:
     country = country.strip()
-    countryselected = [country]
-    dfcountry = df[df['Country'].isin(countryselected)]  # special bool from pandas. If True, includes the line
-    dfcountry.rename(columns={"Date": "Fecha", "Confirmed": "Confirmados", "Recovered": "Recuperados", "Deaths": "Muertos"}, inplace=True) # Rename
+    confirmed = dfconfirmed.loc[dfconfirmed['Country/Region'] == country]
+    deaths = dfdeaths.loc[dfdeaths['Country/Region'] == country]
+    recovered = dfrecovered.loc[dfrecovered['Country/Region'] == country]
 
+    dfcountry = confirmed.append(deaths)
+    dfcountry = dfcountry.append(recovered)
+    dfcountry = dfcountry.T[4:]
+    dfcountry.index.name = "Fecha"
+    dfcountry.columns = ['Confirmados', 'Muertos', 'Recuperados']
+    
     # Calcular y agregar columna de activos
-    dfcountry = dfcountry.assign(Activos=lambda y: df.Confirmed - df.Recovered - df.Deaths) 
+    dfcountry = dfcountry.assign(Activos=lambda y: dfcountry.Confirmados - dfcountry.Muertos - dfcountry.Recuperados) 
     lconfirmed = dfcountry.Confirmados.to_list() # Se usa para calcular otros indicadores
 
     # Casos nuevos
@@ -75,7 +94,7 @@ for country in countries:
     while i < len(lconfirmed):
         nuevos.append(lconfirmed[i] - lconfirmed[i-1])
         i+=1
-    dfcountry.insert(1, "Nuevos", nuevos)
+    dfcountry.insert(0, "Nuevos", nuevos)
 
     # % de casos nuevos
     i=1
@@ -106,15 +125,9 @@ for country in countries:
 
     print (dfcountry)
 
-    # Mortalidad
-    dfcountry = dfcountry.assign(Mortalidad=lambda y: round(dfcountry.Muertos / dfcountry.Activos,redondeo)*100)
-    dfcountry.rename(columns={"Mortalidad": "%Mortalidad"}, inplace=True)
-
-    # Change index
-    dfcountry = dfcountry.set_index('Fecha')
-
-    # Delete country column
-    dfcountry = dfcountry.drop(columns=['Country'])
+    # Mortalidad - FALTA IMPLEMENTAR, DA DIVISION POR CERO
+    #dfcountry = dfcountry.assign(Mortalidad=lambda y: round(dfcountry.Muertos / dfcountry.Activos,redondeo)*100 )
+    #dfcountry.rename(columns={"Mortalidad": "%Mortalidad"}, inplace=True)
 
     # Save to Excel file
     excel_filename = "./xlsx/" + country + ".xlsx"

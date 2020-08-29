@@ -43,8 +43,7 @@ Carpetas
 
 Scripts
 - sortfilenames.py: Actualiza el dataset ./csv/provincias.csv
-- duplicate.py: Genera una planilla Excel por cada país seleccionado usando como base el dataset disponible públicamente en https://raw.githubusercontent.com/datasets/covid-19/master/data/countries-aggregated.csv
-NOTA 28/08/2020. Este dataset dejó de actualizarse. Voy a generar los reportes a partir del dataset global de humdata.org.
+- duplicate.py: Genera una planilla Excel por cada país seleccionado usando como base los datasets globales de humdata.org.
 - duplicate-prov.py: Genera una planilla Excel por cada provincia argentina seleccionada usando como base el dataset generado por el script sortfilenames.py. 
 
 
