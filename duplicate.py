@@ -73,15 +73,26 @@ redondeo = 4  # Cuantos digitos decimales se desean para los indicadores
 
 for country in countries:
     country = country.strip()
+
+    #Seleccionar datos
     confirmed = dfconfirmed.loc[dfconfirmed['Country/Region'] == country]
     deaths = dfdeaths.loc[dfdeaths['Country/Region'] == country]
     recovered = dfrecovered.loc[dfrecovered['Country/Region'] == country]
 
+    # Crear el dataset 
     dfcountry = confirmed.append(deaths)
     dfcountry = dfcountry.append(recovered)
     dfcountry = dfcountry.T[4:]
     dfcountry.index.name = "Fecha"
     dfcountry.columns = ['Confirmados', 'Muertos', 'Recuperados']
+    dfcountry = dfcountry.astype('int64') # Cambio de tipo para poder hacer las operaciones
+
+    # Formatear el indice segun el formato de fecha estandar de Python 
+    dfcountry.reset_index(level=0, inplace=True)
+    dfcountry = dfcountry.rename(columns={'index': 'DateTime'})
+    dfcountry['Fecha'] = dfcountry['Fecha'].astype('datetime64')
+    dfcountry.index = dfcountry.Fecha
+    dfcountry = dfcountry.drop(columns=['Fecha'])
     
     # Calcular y agregar columna de activos
     dfcountry = dfcountry.assign(Activos=lambda y: dfcountry.Confirmados - dfcountry.Muertos - dfcountry.Recuperados) 
@@ -123,14 +134,14 @@ for country in countries:
     # Tiempo de duplicacion 
     dfcountry = dTime (dfcountry, "Confirmados", "Recuperados", "Activos")
 
-    print (dfcountry)
+    # Mortalidad. SOLUCIONADO: al cambiar los tipos a int64 no da excepcion de division por cero
+    dfcountry = dfcountry.assign(Mortalidad=lambda y: round(dfcountry.Muertos / dfcountry.Activos,redondeo)*100 )
+    dfcountry.rename(columns={"Mortalidad": "%Mortalidad"}, inplace=True)
 
-    # Mortalidad - FALTA IMPLEMENTAR, DA DIVISION POR CERO
-    #dfcountry = dfcountry.assign(Mortalidad=lambda y: round(dfcountry.Muertos / dfcountry.Activos,redondeo)*100 )
-    #dfcountry.rename(columns={"Mortalidad": "%Mortalidad"}, inplace=True)
+    print (dfcountry)
 
     # Save to Excel file
     excel_filename = "./xlsx/" + country + ".xlsx"
-    writer = pd.ExcelWriter(excel_filename, datetime_format='DD/MM/YY') # Is a method from pandas!!! (pd, not df)
+    writer = pd.ExcelWriter(excel_filename, datetime_format='DD/MM/YY') # Metodo de Pandas, no del dataset!
     dfcountry.to_excel (writer)
     writer.save()
