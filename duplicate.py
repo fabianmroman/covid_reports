@@ -23,7 +23,7 @@ v1.4 Reorganizados nombres de variables y comentarios para darle legibilidad y c
 v1.5 Comienzan a utilizarse los datasets globales de humdata.org, ya que los que se utilizaron en el script original
      dejaron de actualizarse. Adaptacion del codigo a los nuevos datasets.
      https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/
-     Pendiente: cambiar formato de fecha a mm/dd/yy.
+     Solucionados issues con tipos de datos con el nuevo dataset. 
 """
 
 import pandas as pd
@@ -85,7 +85,7 @@ for country in countries:
     dfcountry = dfcountry.T[4:]
     dfcountry.index.name = "Fecha"
     dfcountry.columns = ['Confirmados', 'Muertos', 'Recuperados']
-    dfcountry = dfcountry.astype('int64') # Cambio de tipo para poder hacer las operaciones
+    dfcountry = dfcountry.astype('int64') # Cambio de tipo de datos para poder hacer las operaciones sin errores
 
     # Formatear el indice segun el formato de fecha estandar de Python 
     dfcountry.reset_index(level=0, inplace=True)
@@ -134,13 +134,13 @@ for country in countries:
     # Tiempo de duplicacion 
     dfcountry = dTime (dfcountry, "Confirmados", "Recuperados", "Activos")
 
-    # Mortalidad. SOLUCIONADO: al cambiar los tipos a int64 no da excepcion de division por cero
+    # Mortalidad
     dfcountry = dfcountry.assign(Mortalidad=lambda y: round(dfcountry.Muertos / dfcountry.Activos,redondeo)*100 )
     dfcountry.rename(columns={"Mortalidad": "%Mortalidad"}, inplace=True)
 
     print (dfcountry)
 
-    # Save to Excel file
+    # Guardar a un archivo Excel
     excel_filename = "./xlsx/" + country + ".xlsx"
     writer = pd.ExcelWriter(excel_filename, datetime_format='DD/MM/YY') # Metodo de Pandas, no del dataset!
     dfcountry.to_excel (writer)
