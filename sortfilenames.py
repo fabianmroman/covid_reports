@@ -47,7 +47,10 @@ duplicate-prov.py.
     https://docs.google.com/spreadsheets/d/16-bnsDdmmgtSxdWbVMboIHo5FRuz76DBxsz_BbsEVWA/export?format=csv&id=16-bnsDdmmgtSxdWbVMboIHo5FRuz76DBxsz_BbsEVWA&gid=0
     Link publicado en https://github.com/SistemasMapache/Covid19arData
     12/08/2020
-    Paths separados para cada tipo de archivo 
+    Paths separados para cada tipo de archivo
+
+    v1.5.1
+    Corregir error al cargar un vespertino que es del dia actual, se lo "salta".
 """
 
 from pdfminer.layout import LAParams, LTTextBox
