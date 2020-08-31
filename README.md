@@ -1,18 +1,20 @@
 Reportes de Covid-19 - versión 1 
 
-Este proyecto genera reportes en planillas de Excel de provincias de Argentina y de países del mundo a partir de información disponible públicamente. Para el caso de Argentina, el dataset se genera a partir de PDFs. En las planillas se incorporan indicadores que facilitan el análisis y entendimiento de los datos.
+Este proyecto genera reportes en planillas de Excel de provincias de Argentina y de países del mundo a partir de información disponible públicamente.
+Para el caso de Argentina, el dataset se genera a partir de PDFs y contiene los casos diarios y acumulados por cada provincia (./csv/provincias.csv). 
+En las planillas se incorporan indicadores que facilitan el análisis y entendimiento de los datos.
 
 
 Cómo comenzo esto
 
 A fines de marzo 2020, cuando supe que estaban disponibles los datasets con informacion a nivel mundial (https://data.humdata.org/dataset/novel-coronavirus-2019-ncov-cases), quise poder generar mis propios reportes de determinados países. 
-Como mi conocimiendo de Python era muy básico, comencé a hacerlo en Excel, con todas sus limitaciones y procedimientos manuales. 
+Como mi conocimiento de Python era muy básico, comencé a hacerlo en Excel, con todas sus limitaciones y procedimientos manuales. 
 En julio retomé por unos días mi aprendizaje de Python y luego comencé a poner manos a la obra en este primer proyecto en Python, usándolo con propósitos de aprendizaje. 
 
 
 ¿Por qué analizo los datos del COVID-19?
 
-Porque son datos que se actualizan diariamente, que simulan perfectamente la vida real respecto a datos  datos cargados a mano, a datos faltantes, datos que se actualizan el día siguiente, etc, para generar datos limpios.  
+Porque son datos que se actualizan diariamente, que simulan perfectamente la vida real respecto a datos cargados a mano, a datos faltantes, datos que se actualizan el día siguiente, etc, para generar datos limpios.  
 
 
 ¿Qué hay de distinto? 
@@ -22,7 +24,7 @@ Se calcula el tiempo de duplicación (método simétrico), indicador que no vi en n
 
 ¿Por qué saqué los datos a partir de un PDF? 
 
-Porque recién en mayo se comenzaron a publicar los datos en forma de dataset, abiertamente. Recién a fines de julio (por medio de Sistemas Mapache) me enteré de la existencia de esos datos. 
+Porque recién en mayo se comenzaron a publicar los datos en forma de dataset, abiertamente. A fines de julio (por medio de Sistemas Mapache) me enteré de la existencia de esos datos. 
 Además, me pareció buena práctica para aprender cómo sacar datos de una fuente que no fue preparada para ser analizada. 
 
 
@@ -66,7 +68,6 @@ Pendientes - To Do
 - Agregar gráficos. 
 - Llevar los reportes a un sitio web interactivo. 
 - Mejorar función que calcula el tiempo de duplicación.
-- Comenzar a trabajar desde Github, para manetener versionado. Hasta no tener una versión limpia no quería subirlo. De todas maneras las sucesivas versiones y mejoras hasta llegar al código actual están en la carpeta "versioning". 
 - Estructura modularizada para poder obtener las variables y funciones de un único lugar. 
 - Selección sin usar acentos. 
 - Agregar datos de localidades.
