@@ -50,7 +50,9 @@ duplicate-prov.py.
     Paths separados para cada tipo de archivo
 
     v1.5.1
-    Corregido error al cargar un vespertino que es del dia actual, no decrementa maxdate. 
+    Corregido error al actualizar el dataset para el dia actual, no decrementa maxdate del matutino si ya hay
+    un vespertino de ese dia.
+    Verificado para mes septiembre. Corregida URL de base. 
 """
 
 from pdfminer.layout import LAParams, LTTextBox
@@ -147,7 +149,7 @@ if provFile:
     print (today)
 
     # Diccionario para hacer la traduccion mes - nro 
-    meses = {"08":"agosto", "07":"julio", "06":"junio", "05":"mayo", "04":"abril"}
+    meses = {"09":"septiembre", "08":"agosto", "07":"julio", "06":"junio", "05":"mayo", "04":"abril"}
 
     if int(fechacsv[1]) > 3: 
         count = int(today[1]) - int(fechacsv[1]) + 1
@@ -178,7 +180,7 @@ if provFile:
         if meses[mes] == "agosto":  # hay que ver como lo cargan para septiembre...
             req = Request('https://www.argentina.gob.ar/informes-diarios/' + meses[mes] + "-de-" + anio, headers={'User-Agent': 'Mozilla/5.0'})
         else:
-            req = Request('https://www.argentina.gob.ar/coronavirus/informe-diario/' + meses[mes] + anio, headers={'User-Agent': 'Mozilla/5.0'})
+            req = Request('https://www.argentina.gob.ar/coronavirus/informes-diarios/reportes/' + meses[mes] + anio, headers={'User-Agent': 'Mozilla/5.0'})
         content = urlopen(req).read()
         content = content.decode('utf-8') # convert to a string
         content = content.split("><")
