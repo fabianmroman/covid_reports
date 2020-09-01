@@ -50,7 +50,7 @@ duplicate-prov.py.
     Paths separados para cada tipo de archivo
 
     v1.5.1
-    Corregir error al cargar un vespertino que es del dia actual, se lo "salta".
+    Corregido error al cargar un vespertino que es del dia actual, no decrementa maxdate. 
 """
 
 from pdfminer.layout import LAParams, LTTextBox
@@ -201,7 +201,8 @@ if provFile:
                         fechaultimomat = diasanteriores[-1][1].split("-")
                         if int(fechaultimomat[0]) == int(filedate[0])+1 or int(fechaultimomat[0]) == 1:
                             diasanteriores = diasanteriores[0:len(diasanteriores)-1]
-                            if int(fechaultimomat[0]) == int(today[0]):
+                            if int(fechaultimomat[0]) == int(today[0]) and not "VESPERTINO" in filename.upper():
+                            # Solo decrementa si hay un unico reporte para el dia, que son datos del dia anterior
                                 maxdate -=1
                         if diasanteriores != []:
                             maxdate -=1    
