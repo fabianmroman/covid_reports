@@ -13,10 +13,14 @@ de datos actualizados.
 
     v1.2
     Reorganizados nombres de variables y comentarios para darle legibilidad y coherencia al codigo.
-    Codigo adaptado con paths diferentes para cada tipo de archivo. 
+    Codigo adaptado con paths diferentes para cada tipo de archivo.
+
+    v1.2.1
+    Se corrige nombres de provincias en caso de introducirlas de diferente forma.
 """
 
 import pandas as pd
+pd.options.mode.chained_assignment = None 
 
 CSV_FILE = "./csv/provincias.csv"
 
@@ -51,6 +55,18 @@ def dTime (df, *from_columns):
         df['Tiempodupl' + column] = duplist
     return df
 
+def corregirTipeo (provincia):
+    equivalencia = ""
+    listado = {"Cordoba": "Córdoba", "Tucuman": "Tucumán", "Pcia de Buenos Aires": "Buenos Aires",
+               "Provincia de Buenos Aires": "Buenos Aires", "CABA": "Ciudad de Buenos Aires",
+               "Ciudad Buenos Aires": "Ciudad de Buenos Aires", "Entre Rios": "Entre Ríos",
+               "Neuquen": "Neuquén", "Rio Negro": "Río Negro", "Tucuman": "Tucumán"}
+    try:
+        equivalencia = listado[provincia]
+    except:
+        return provincia
+    if equivalencia != "":
+        return equivalencia
 
 
 # MAIN
@@ -65,10 +81,10 @@ print (provincias)
 
 for provincia in provincias:
     provincia = provincia.strip()
+    provincia = corregirTipeo(provincia) # Corrige en caso de introducir las provincias de != formas
     print (provincia)
     provinciaseleccionada = [provincia] # Debe ser una lista para buscar en el dataset
     dfprovincia = df[df['Provincia'].isin(provinciaseleccionada)]
-    
     dfprovincia = dTime (dfprovincia, "Acumulado") # Agregar columna de T. de Duplicacion
     dfprovincia = dfprovincia.set_index('Fecha') # Cambiar indice
     dfprovincia = dfprovincia.drop(columns=['Provincia']) # Borrar columna de provincia 

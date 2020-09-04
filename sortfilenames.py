@@ -52,7 +52,8 @@ duplicate-prov.py.
     v1.5.1
     Corregido error al actualizar el dataset para el dia actual, no decrementa maxdate del matutino si ya hay
     un vespertino de ese dia.
-    Verificado para mes septiembre. Corregida URL de base. 
+    Verificado para mes septiembre. Corregida URL de base.
+    Se crean directorios para los CSV si no existe el path. 
 """
 
 from pdfminer.layout import LAParams, LTTextBox
@@ -67,6 +68,7 @@ from calendar import monthrange
 import re
 import os
 import sys
+
 
 CSV_FILE = "./csv/provincias.csv"
 CSV_PROVINCIAS_MARZO = "./csv/provincias_marzo.csv"
@@ -95,6 +97,8 @@ try:
                     provFile = True
         f.close()
 except:  # archivo inexistente
+    if not os.path.exists(os.path.dirname(CSV_FILE)):
+        os.makedirs(os.path.dirname(CSV_FILE))
     urlretrieve("https://raw.githubusercontent.com/fabianmroman/covid_reports_v1/master/csv/provincias.csv", CSV_FILE)
     with open(CSV_FILE, 'r') as f:
         if len(f.read()) >= 31750: # Dataset de marzo bajado correctamente
@@ -113,6 +117,8 @@ try:
                     provmarzoFile = True
         g.close()
 except:  # archivo inexistente
+    if not os.path.exists(os.path.dirname(CSV_PROVINCIAS_MARZO)):
+        os.makedirs(os.path.dirname(CSV_PROVINCIAS_MARZO))
     urlretrieve("https://raw.githubusercontent.com/fabianmroman/covid_reports_v1/master/csv/provincias_marzo.csv", CSV_PROVINCIAS_MARZO)
     with open(CSV_PROVINCIAS_MARZO, 'r') as g:
         if len(g.read()) == 31750: # Dataset de marzo bajado correctamente

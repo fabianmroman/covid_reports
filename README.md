@@ -58,7 +58,6 @@ Uso
 
 Issues
 - Como los datos se cargan a mano, pueden haber variaciones con los nombres de archivo no consideradas. Puede ocurrir tambien que cambien la forma de nombrar el directorio del mes (ocurrió en agosto). Cuando migre el análisis al dataset oficial no será necesario estar pendiente de esto. 
-- Solucionar el warning SettingWithCopyWarning. 
 
 
 

@@ -130,7 +130,8 @@ for country in countries:
             tendencianuevos.append("")
         i+=1
     dfcountry.insert(5, "Tendencia Nuevos", tendencianuevos)
-
+    
+    
     # Tiempo de duplicacion 
     dfcountry = dTime (dfcountry, "Confirmados", "Recuperados", "Activos")
 
@@ -138,7 +139,6 @@ for country in countries:
     dfcountry = dfcountry.assign(Mortalidad=lambda y: round(dfcountry.Muertos / dfcountry.Activos,redondeo)*100 )
     dfcountry.rename(columns={"Mortalidad": "%Mortalidad"}, inplace=True)
 
-    print (dfcountry)
 
     # Guardar a un archivo Excel
     excel_filename = "./xlsx/" + country + ".xlsx"
