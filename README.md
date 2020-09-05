@@ -68,6 +68,4 @@ Pendientes - To Do
 - Llevar los reportes a un sitio web interactivo. 
 - Mejorar función que calcula el tiempo de duplicación.
 - Estructura modularizada para poder obtener las variables y funciones de un único lugar. 
-- Selección sin usar acentos. 
 - Agregar datos de localidades.
-- Chequear existencia de estructura de directorios.
