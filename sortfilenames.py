@@ -182,7 +182,7 @@ if provFile:
         print (mes)
         print (meses[mes])
         listadodelmesdecr = [] # Para guardar los archivos del mes y luego ordenarlos
-        maxdate = 0 # Fecha maxima del mes
+        maxdate = 0 # Fecha maxima del mes, inicializacion 
         if meses[mes] == "agosto":  # hay que ver como lo cargan para septiembre...
             req = Request('https://www.argentina.gob.ar/informes-diarios/' + meses[mes] + "-de-" + anio, headers={'User-Agent': 'Mozilla/5.0'})
         else:
@@ -198,7 +198,10 @@ if provFile:
                 filename = URL.split("/")[-1]
                 filedate = re.split('_|-',filename) # fecha en el archivo
                 if int(filedate[0]) > maxdate:
-                    maxdate = int(filedate[0])
+                    if "VESPERTINO" in filename.upper():
+                        maxdate = int(filedate[0])
+                    else:
+                        maxdate = int(filedate[0])-1
                 print (URL)
                 if len(filedate[0]) == 1: # si el dia en el archivo viene con un solo digito
                     filename = "0" + filename
@@ -209,11 +212,11 @@ if provFile:
                         fechaultimomat = diasanteriores[-1][1].split("-")
                         if int(fechaultimomat[0]) == int(filedate[0])+1 or int(fechaultimomat[0]) == 1:
                             diasanteriores = diasanteriores[0:len(diasanteriores)-1]
-                            if int(fechaultimomat[0]) == int(today[0]) and not "VESPERTINO" in filename.upper():
+                            #if int(fechaultimomat[0]) == int(today[0]) and not "VESPERTINO" in filename.upper():
                             # Solo decrementa si hay un unico reporte para el dia, que son datos del dia anterior
-                                maxdate -=1
-                        if diasanteriores != []:
-                            maxdate -=1    
+                            #    maxdate -=1
+                        #if diasanteriores != []:
+                        #    maxdate -=1    
                     if diasanteriores != []:
                         for dias in diasanteriores:
                             if not os.path.isfile(PATHPDF + dias[1]):
