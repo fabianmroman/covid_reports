@@ -53,7 +53,8 @@ duplicate-prov.py.
     Corregido error al actualizar el dataset para el dia actual, no decrementa maxdate del matutino si ya hay
     un vespertino de ese dia.
     Verificado para mes septiembre. Corregida URL de base.
-    Se crean directorios para los CSV si no existe el path. 
+    Se crean directorios para los CSV si no existe el path.
+    Simplificacion en la forma de calcular el maxdate (ultimo dia del mes con datos). 
 """
 
 from pdfminer.layout import LAParams, LTTextBox
@@ -211,12 +212,7 @@ if provFile:
                     if diasanteriores != []: # elimina matutinos con info repetida y corrige fechas
                         fechaultimomat = diasanteriores[-1][1].split("-")
                         if int(fechaultimomat[0]) == int(filedate[0])+1 or int(fechaultimomat[0]) == 1:
-                            diasanteriores = diasanteriores[0:len(diasanteriores)-1]
-                            #if int(fechaultimomat[0]) == int(today[0]) and not "VESPERTINO" in filename.upper():
-                            # Solo decrementa si hay un unico reporte para el dia, que son datos del dia anterior
-                            #    maxdate -=1
-                        #if diasanteriores != []:
-                        #    maxdate -=1    
+                            diasanteriores = diasanteriores[0:len(diasanteriores)-1] 
                     if diasanteriores != []:
                         for dias in diasanteriores:
                             if not os.path.isfile(PATHPDF + dias[1]):
@@ -227,9 +223,8 @@ if provFile:
                     listadodelmesdecr.append(filename)
                     diasanteriores = []
                 else:
-                    diasanteriores.append([URL, filename])   
+                    diasanteriores.append([URL, filename])
                 
-
         print (listadodelmesdecr)
         if today[1] == mes and fechacsv[1] == mes:
             count = maxdate - int(fechacsv[0]) # Cuantos dias para atras incluir
