@@ -54,7 +54,8 @@ duplicate-prov.py.
     un vespertino de ese dia.
     Verificado para mes septiembre. Corregida URL de base.
     Se crean directorios para los CSV si no existe el path.
-    Simplificacion en la forma de calcular el maxdate (ultimo dia del mes con datos). 
+    Simplificacion en la forma de calcular el maxdate (ultimo dia del mes con datos).
+    Agregado para datos de octubre. 
 """
 
 from pdfminer.layout import LAParams, LTTextBox
@@ -155,9 +156,10 @@ if provFile:
     today = today.split("-") #[dia, mes, anio]
     print (today)
 
-    # Diccionario para hacer la traduccion mes - nro 
-    meses = {"09":"septiembre", "08":"agosto", "07":"julio", "06":"junio", "05":"mayo", "04":"abril"}
+    # Diccionario para hacer la traduccion mes - nro. Revisar cada mes por si hay cambios en la URL
+    meses = {"10":"octubre", "09":"septiembre", "08":"agosto", "07":"julio", "06":"junio", "05":"mayo", "04":"abril"}
 
+    # Revisar logica para 2021 si se sigue usando este codigo
     if int(fechacsv[1]) > 3: 
         count = int(today[1]) - int(fechacsv[1]) + 1
     else:
@@ -167,7 +169,10 @@ if provFile:
     mesesaprocesar = []
 
     for i in range(0,count):
-        mesesaprocesar.append("0" + str (int(today[1])-i) )
+        if int(today[1])-i < 10:
+            mesesaprocesar.append("0" + str (int(today[1])-i) )
+        else:
+            mesesaprocesar.append(str (int(today[1])-i) )
 
     print (mesesaprocesar)
 
