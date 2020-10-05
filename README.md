@@ -9,12 +9,13 @@ Cómo comenzo esto
 
 A fines de marzo 2020, cuando supe que estaban disponibles los datasets con informacion a nivel mundial (https://data.humdata.org/dataset/novel-coronavirus-2019-ncov-cases), quise poder generar mis propios reportes de determinados países. 
 Como mi conocimiento de Python era muy básico, comencé a hacerlo en Excel, con todas sus limitaciones y procedimientos manuales. 
-En julio retomé por unos días mi aprendizaje de Python y luego comencé a poner manos a la obra en este primer proyecto en Python, usándolo con propósitos de aprendizaje. 
+En julio retomé por unos días mi aprendizaje de Python y luego comencé a poner manos a la obra en este primer proyecto en Python, aprovechando a usarlo como propósito de aprendizaje. 
 
 
 ¿Por qué analizo los datos del COVID-19?
 
 Porque son datos que se actualizan diariamente, que simulan perfectamente la vida real respecto a datos cargados a mano, a datos faltantes, datos que se actualizan el día siguiente, etc, para generar datos limpios.  
+Además, necesitaba poder tener información adaptada a mis intereses, para poder tomar decisiones sobre mi vida y carrera profesional en base a esos datos.
 
 
 ¿Qué hay de distinto? 
