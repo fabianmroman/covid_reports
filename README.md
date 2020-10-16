@@ -70,3 +70,4 @@ Pendientes - To Do
 - Mejorar función que calcula el tiempo de duplicación.
 - Estructura modularizada para poder obtener las variables y funciones de un único lugar. 
 - Agregar datos de localidades.
+- Podría usar BeautifulSoup para hacer el Web Scraping. 
