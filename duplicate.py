@@ -23,7 +23,8 @@ v1.4 Reorganizados nombres de variables y comentarios para darle legibilidad y c
 v1.5 Comienzan a utilizarse los datasets globales de humdata.org, ya que los que se utilizaron en el script original
      dejaron de actualizarse. Adaptacion del codigo a los nuevos datasets.
      https://github.com/CSSEGISandData/COVID-19/blob/master/csse_covid_19_data/csse_covid_19_time_series/
-     Solucionados issues con tipos de datos con el nuevo dataset. 
+     Solucionados issues con tipos de datos con el nuevo dataset.
+     Corregida formula de calculo de mortalidad.
 """
 
 import pandas as pd
@@ -136,7 +137,7 @@ for country in countries:
     dfcountry = dTime (dfcountry, "Confirmados", "Recuperados", "Activos")
 
     # Mortalidad
-    dfcountry = dfcountry.assign(Mortalidad=lambda y: round(dfcountry.Muertos / dfcountry.Activos,redondeo)*100 )
+    dfcountry = dfcountry.assign(Mortalidad=lambda y: round(dfcountry.Muertos / dfcountry.Confirmados,redondeo)*100 )
     dfcountry.rename(columns={"Mortalidad": "%Mortalidad"}, inplace=True)
 
 
